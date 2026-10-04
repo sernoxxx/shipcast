@@ -1,0 +1,102 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>shipcast card</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<style>
+{{fonts}}
+:root{
+  --canvas:#0d0e11; --surface:#16171c; --surface-2:#1d1f26;
+  --ink:#f4f4f6; --soft:rgba(244,244,246,.62); --faint:rgba(244,244,246,.38);
+  --accent:#34d78f; --line:rgba(255,255,255,.08);
+  --display:"Space Grotesk","Inter",system-ui,sans-serif;
+  --body:"Inter",system-ui,sans-serif;
+  --mono:ui-monospace,"Cascadia Mono","Roboto Mono",Menlo,monospace;
+  /* Shape and light — a style overrides these, no template surgery needed. */
+  --radius:34px; --case:uppercase;
+  --sheen:rgba(255,255,255,.10); --dot:rgba(255,255,255,.045);
+}
+/* Per-project style tokens (styles/<name>.json). Same specificity, later wins. */
+{{vars}}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:{{w}}px;height:{{h}}px;overflow:hidden}
+body{
+  background-color:var(--canvas); color:var(--ink); font-family:var(--body);
+  /* The one light source: soft, top-center. */
+  background-image:radial-gradient(120% 55% at 50% -12%, var(--sheen) 0%, transparent 60%);
+  display:flex; align-items:center; justify-content:center; padding:{{pad}}px;
+  -webkit-font-smoothing:antialiased;
+}
+/* Ambience: dotfield, barely visible. Without it the surface reads as paper. */
+body::before{
+  content:""; position:fixed; inset:0; pointer-events:none;
+  background-image:radial-gradient(var(--dot) 1px, transparent 1px);
+  background-size:26px 26px;
+  -webkit-mask-image:radial-gradient(80% 60% at 50% 0%, #000 0%, transparent 75%);
+}
+.card{
+  position:relative; width:100%;
+  display:flex; flex-direction:column; border-radius:var(--radius); padding:64px 60px 56px;
+  background:linear-gradient(168deg, var(--surface-2) 0%, var(--surface) 58%, #121319 100%);
+  /* Glass with sheen: a hairline of light on the top edge + two shadows, not five. */
+  box-shadow:inset 0 1px 0 var(--sheen), inset 0 0 0 1px rgba(255,255,255,.05),
+             0 40px 90px -30px rgba(0,0,0,.85);
+  overflow:hidden;
+}
+/* Diagonal light streak — the panel is lit from top-left, like everything else. */
+.card::before{
+  content:""; position:absolute; inset:0; pointer-events:none;
+  background:linear-gradient(118deg, var(--sheen) 0%, transparent 34%);
+}
+/* Rationed hue: one hairline at the top, otherwise the card stays monochrome. */
+.card::after{
+  content:""; position:absolute; top:0; left:14%; right:14%; height:2px;
+  background:linear-gradient(90deg, transparent, var(--accent), transparent); opacity:.85;
+}
+.head{display:flex; align-items:center; gap:18px; margin-bottom:44px}
+/* The socket: sunk into the surface so the mark glows out instead of sitting on top. */
+.socket{
+  width:64px; height:64px; border-radius:calc(var(--radius) * .56); flex:none; display:grid; place-items:center;
+  background:#101116;
+  box-shadow:inset 0 2px 6px rgba(0,0,0,.75), inset 0 -1px 0 rgba(255,255,255,.07);
+}
+.eyebrow{font-size:19px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--faint)}
+.eyebrow b{color:var(--accent); font-weight:700}
+h1{
+  font-family:var(--display); font-weight:700; text-transform:var(--case);
+  font-size:{{size}}px; line-height:1.04; letter-spacing:-.03em; margin-bottom:40px;
+  text-wrap:balance;
+}
+ul{list-style:none; display:flex; flex-direction:column; gap:20px; margin-bottom:52px}
+li{
+  display:flex; gap:16px; align-items:flex-start;
+  font-size:27px; line-height:1.42; color:var(--soft); font-weight:400;
+}
+li span{flex:1}
+li::before{
+  content:""; flex:none; width:9px; height:9px; margin-top:14px; border-radius:3px;
+  background:var(--accent); box-shadow:0 0 14px color-mix(in srgb, var(--accent) 55%, transparent);
+}
+li b{color:var(--ink); font-weight:600}
+.foot{
+  margin-top:auto; display:flex; align-items:center; justify-content:space-between; gap:24px;
+  padding-top:30px; border-top:1px solid var(--line);
+}
+.handle{font-family:var(--display); font-size:25px; font-weight:500; letter-spacing:-.01em}
+.meta{font-family:var(--mono); font-size:21px; color:var(--faint); font-feature-settings:"tnum" 1}
+.meta em{color:var(--accent); font-style:normal}
+</style>
+<div class="card">
+  <div class="head">
+    <div class="socket">
+      <!-- Mark: a drawn miniature — prompt chevron plus ship pulse. No stock icon. -->
+      {{mark}}
+    </div>
+    <div class="eyebrow">{{eyebrow}}</div>
+  </div>
+  <h1>{{headline}}</h1>
+  <ul>{{bullets}}</ul>
+  <div class="foot">
+    <div class="handle">{{handle}}</div>
+    <div class="meta">{{meta}}</div>
+  </div>
+</div>

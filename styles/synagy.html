@@ -1,0 +1,91 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>shipcast card · synagy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<style>
+{{fonts}}
+:root{
+  --canvas:#F7F5F0; --surface:#FFFFFF; --surface-2:#F3F0E9;
+  --ink:#16151A; --soft:#6E6C78; --faint:#9A98A5;
+  --accent:#F26B1D; --line:rgb(22 21 26 / .09);
+  --display:"Bricolage Grotesque",system-ui,sans-serif;
+  --body:"Schibsted Grotesk",system-ui,sans-serif;
+  --mono:"Martian Mono",ui-monospace,monospace;
+  --radius:28px; --case:none;
+  /* Toybox jelly colors: color lives in objects, never in the background. */
+  --tang:#F26B1D; --bub:#F0458F; --sky:#3E9BEA; --lime:#5CC93B; --butter:#FFD84D;
+}
+{{vars}}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:{{w}}px;height:{{h}}px;overflow:hidden}
+body{
+  background-color:var(--canvas); color:var(--ink); font-family:var(--body);
+  /* Paper cove: a soft floor shadow so the card stands on something. */
+  background-image:radial-gradient(70% 22% at 50% 88%, rgb(22 21 26 / .07) 0%, transparent 70%);
+  display:flex; align-items:center; justify-content:center; padding:{{pad}}px;
+  -webkit-font-smoothing:antialiased;
+}
+/* The card is a key: white face, solid lip underneath, like the buttons on the site. */
+.card{
+  position:relative; width:100%;
+  display:flex; flex-direction:column; border-radius:var(--radius); padding:60px 60px 52px;
+  background:var(--surface);
+  border:2px solid var(--ink);
+  box-shadow:0 10px 0 var(--ink), 0 34px 60px -24px rgb(22 21 26 / .35);
+}
+.head{display:flex; align-items:center; gap:20px; margin-bottom:46px}
+.socket{width:64px; height:64px; flex:none; display:grid; place-items:center}
+.socket svg{width:64px; height:64px}
+/* Sticker instead of a lower third: butter, tilted, with a hard edge. */
+.eyebrow{
+  font-family:var(--display); font-size:20px; font-weight:800; letter-spacing:.08em; text-transform:uppercase;
+  background:var(--butter); color:var(--ink); padding:9px 18px 8px; border-radius:10px;
+  border:2px solid var(--ink); box-shadow:0 4px 0 var(--ink); transform:rotate(-3deg);
+}
+h1{
+  font-family:var(--display); font-weight:800; text-transform:var(--case);
+  font-size:{{size}}px; line-height:1.0; letter-spacing:-.035em; margin-bottom:44px;
+  text-wrap:balance;
+}
+ul{list-style:none; display:flex; flex-direction:column; gap:22px; margin-bottom:50px}
+li{
+  display:flex; gap:20px; align-items:center;
+  font-size:28px; line-height:1.36; color:var(--soft); font-weight:400;
+}
+li span{flex:1}
+li b{color:var(--ink); font-weight:700}
+/* Icon tile: a small jelly key per row, colors rotate through the palette. */
+li i{
+  flex:none; width:58px; height:58px; border-radius:16px; display:grid; place-items:center;
+  font-style:normal; font-size:28px; border:2px solid var(--ink); box-shadow:0 4px 0 var(--ink);
+  background:var(--tang);
+}
+li:nth-child(2) i{background:var(--sky)}
+li:nth-child(3) i{background:var(--bub)}
+li:nth-child(4) i{background:var(--lime)}
+li:not(:has(i))::before{
+  content:""; flex:none; width:14px; height:14px; border-radius:5px; background:var(--accent);
+  border:2px solid var(--ink);
+}
+.foot{
+  margin-top:auto; display:flex; align-items:center; justify-content:space-between; gap:24px;
+  padding-top:28px; border-top:2px dashed var(--line);
+}
+.handle{font-family:var(--display); font-size:27px; font-weight:800; letter-spacing:-.01em}
+.meta{
+  font-family:var(--mono); font-size:19px; color:var(--accent); font-feature-settings:"tnum" 1;
+  background:#FFF0E6; padding:8px 16px; border-radius:999px;
+}
+</style>
+<div class="card">
+  <div class="head">
+    <div class="socket">{{mark}}</div>
+    <div class="eyebrow">{{eyebrow}}</div>
+  </div>
+  <h1>{{headline}}</h1>
+  <ul>{{bullets}}</ul>
+  <div class="foot">
+    <div class="handle">{{handle}}</div>
+    <div class="meta">{{meta}}</div>
+  </div>
+</div>

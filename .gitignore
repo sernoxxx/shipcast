@@ -1,0 +1,5 @@
+drafts/*
+!drafts/.gitkeep
+__pycache__/
+*.env
+.env*

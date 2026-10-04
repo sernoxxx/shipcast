@@ -1,0 +1,19 @@
+{
+  "match": [],
+  "fonts": "@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&display=swap');",
+  "vars": {
+    "canvas": "#0d0e11",
+    "surface": "#16171c",
+    "surface-2": "#1d1f26",
+    "ink": "#f4f4f6",
+    "soft": "rgba(244,244,246,.62)",
+    "faint": "rgba(244,244,246,.38)",
+    "accent": "#34d78f",
+    "line": "rgba(255,255,255,.08)",
+    "display": "'Space Grotesk','Inter',system-ui,sans-serif",
+    "body": "'Inter',system-ui,sans-serif",
+    "radius": "34px",
+    "case": "uppercase"
+  },
+  "mark": "<svg width=\"34\" height=\"34\" viewBox=\"0 0 34 34\" fill=\"none\"><path d=\"M7 10.5L13 17l-6 6.5\" stroke=\"#34d78f\" stroke-width=\"2.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M17.5 24h9.5\" stroke=\"rgba(244,244,246,.45)\" stroke-width=\"2.6\" stroke-linecap=\"round\"/><path d=\"M17 12.5h4l2-4 2.6 8 2-4h2.4\" stroke=\"#34d78f\" stroke-width=\"2.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" opacity=\".9\"/></svg>"
+}

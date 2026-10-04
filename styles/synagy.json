@@ -1,0 +1,27 @@
+{
+  "match": [
+    "synagy"
+  ],
+  "link": "synagy-studio.vercel.app",
+  "footnote": "Type an idea. Get a playable game.",
+  "fonts": "@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=Schibsted+Grotesk:wght@400;500;600;700&family=Martian+Mono:wght@500&display=swap');",
+  "vars": {
+    "canvas": "#F7F5F0",
+    "surface": "#FFFFFF",
+    "surface-2": "#F3F0E9",
+    "ink": "#16151A",
+    "soft": "#6E6C78",
+    "faint": "#9A98A5",
+    "accent": "#F26B1D",
+    "line": "rgb(22 21 26 / .09)",
+    "display": "'Bricolage Grotesque','Schibsted Grotesk',system-ui,sans-serif",
+    "body": "'Schibsted Grotesk',system-ui,sans-serif",
+    "mono": "'Martian Mono',ui-monospace,monospace",
+    "radius": "28px",
+    "case": "none"
+  },
+  "mark": "<svg viewBox=\"0 0 36 36\" fill=\"none\"><rect x=\"2\" y=\"5\" width=\"32\" height=\"29\" rx=\"9\" fill=\"#16151A\"/><rect x=\"2\" y=\"2\" width=\"32\" height=\"29\" rx=\"9\" fill=\"#F26B1D\" stroke=\"#16151A\" stroke-width=\"1.6\"/><path d=\"M7.5 8.5c2-2.4 5.6-3 8.5-2.6\" stroke=\"#fff\" stroke-opacity=\".55\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M14 10.5v10.5l8.5-5.25z\" fill=\"#FFD84D\" stroke=\"#16151A\" stroke-width=\"1.6\" stroke-linejoin=\"round\"/></svg>",
+  "clip_seconds": 8,
+  "handle": "synagy.games",
+  "x_handle": "@synagy_games"
+}

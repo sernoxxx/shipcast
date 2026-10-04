@@ -1,0 +1,229 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>shipcast clip · synagy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<style>
+{{fonts}}
+:root{
+  --canvas:#F7F5F0; --surface:#FFFFFF; --ink:#16151A; --soft:#6E6C78; --faint:#9A98A5;
+  --accent:#F26B1D; --line:rgb(22 21 26 / .09);
+  --display:"Bricolage Grotesque",system-ui,sans-serif;
+  --body:"Schibsted Grotesk",system-ui,sans-serif;
+  --mono:"Martian Mono",ui-monospace,monospace;
+  --radius:28px;
+  --tang:#F26B1D; --bub:#F0458F; --sky:#3E9BEA; --lime:#5CC93B; --butter:#FFD84D; --grape:#8B5CF6;
+}
+{{vars}}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:{{w}}px;height:{{h}}px;overflow:hidden}
+body{
+  background:var(--canvas); color:var(--ink); font-family:var(--body);
+  background-image:radial-gradient(70% 18% at 50% 84%, rgb(22 21 26 / .07) 0%, transparent 70%);
+  -webkit-font-smoothing:antialiased; position:relative;
+}
+/* Jelly toys around the card: color lives in objects, the paper stays plain. */
+.toy{position:absolute; border:3px solid var(--ink); box-shadow:0 7px 0 var(--ink); will-change:transform}
+.toy::after{content:""; position:absolute; left:18%; top:14%; width:34%; height:16%;
+  border-radius:99px; background:rgb(255 255 255 / .5)}
+.t1{left:64px;  top:150px;  width:120px; height:120px; border-radius:34px; background:var(--tang)}
+.t2{right:88px; top:230px;  width:92px;  height:92px;  border-radius:50%;  background:var(--sky)}
+.t3{left:110px; bottom:250px; width:84px; height:84px; border-radius:50%;  background:var(--lime)}
+.t4{right:70px; bottom:170px; width:130px; height:130px; border-radius:38px; background:var(--bub)}
+.t5{left:470px; top:96px;   width:64px;  height:64px;  border-radius:20px; background:var(--butter)}
+.t6{right:330px; bottom:96px; width:70px; height:70px; border-radius:50%;  background:var(--grape)}
+
+.stage{position:absolute; inset:0; display:flex; align-items:center; justify-content:center; padding:{{pad}}px}
+.card{
+  position:relative; width:100%; display:flex; flex-direction:column;
+  border-radius:calc(var(--radius) * 1.3); padding:76px 64px 64px; background:var(--surface);
+  border:3px solid var(--ink); box-shadow:0 12px 0 var(--ink), 0 40px 70px -26px rgb(22 21 26 / .35);
+  transform-origin:50% 100%;
+}
+.head{display:flex; align-items:center; gap:22px; margin-bottom:50px}
+.socket{width:84px; height:84px; flex:none}
+.socket svg,.logo svg{width:100%; height:100%; display:block}
+.eyebrow{
+  position:relative; font-family:var(--display); font-size:26px; font-weight:800; letter-spacing:.08em;
+  text-transform:uppercase; background:var(--butter); color:var(--ink); padding:10px 20px 9px;
+  border-radius:11px; border:2.5px solid var(--ink); box-shadow:0 5px 0 var(--ink);
+}
+.spark{position:absolute; left:50%; top:50%; width:16px; height:16px; margin:-8px; border-radius:5px;
+  border:2.5px solid var(--ink); opacity:0}
+h1{
+  font-family:var(--display); font-weight:800; font-size:calc({{size}}px * 1.32); line-height:.98;
+  letter-spacing:-.04em; margin-bottom:60px; text-wrap:balance;
+}
+h1 .w{display:inline-block; transform-origin:50% 90%}
+ul{list-style:none; display:flex; flex-direction:column; gap:34px; margin-bottom:70px}
+li{display:flex; gap:24px; align-items:center; font-size:37px; line-height:1.34; color:var(--soft)}
+li span{flex:1}
+li b{color:var(--ink); font-weight:700; padding:0 4px; margin:0 -4px;
+  background:linear-gradient(transparent 58%, rgb(255 216 77 / .85) 58%) no-repeat 0 0 / 0% 100%}
+li i{
+  flex:none; width:78px; height:78px; border-radius:22px; display:grid; place-items:center;
+  font-style:normal; font-size:37px; border:2.5px solid var(--ink); box-shadow:0 5px 0 var(--ink);
+  background:var(--tang);
+}
+li:nth-child(2) i{background:var(--sky)}
+li:nth-child(3) i{background:var(--bub)}
+li:nth-child(4) i{background:var(--lime)}
+.foot{margin-top:auto; display:flex; align-items:center; justify-content:space-between; gap:24px;
+  padding-top:30px; border-top:2.5px dashed var(--line)}
+.handle{font-family:var(--display); font-size:34px; font-weight:800}
+.meta{font-family:var(--mono); font-size:24px; color:var(--accent); background:#FFF0E6;
+  padding:9px 18px; border-radius:999px; font-feature-settings:"tnum" 1}
+
+/* End card: the logo key falls in, a sticker slaps on, the link sits underneath. */
+.end{position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:58px}
+.logo{width:300px; height:300px}
+.follow{
+  font-family:var(--display); font-size:58px; font-weight:800; letter-spacing:-.01em;
+  background:var(--butter); padding:18px 36px 16px; border-radius:20px;
+  border:3px solid var(--ink); box-shadow:0 8px 0 var(--ink);
+}
+.link{font-family:var(--mono); font-size:30px; color:var(--accent); background:#FFF0E6;
+  padding:14px 28px; border-radius:999px}
+</style>
+
+<div class="toy t1"></div><div class="toy t2"></div><div class="toy t3"></div>
+<div class="toy t4"></div><div class="toy t5"></div><div class="toy t6"></div>
+
+<div class="stage">
+  <div class="card">
+    <div class="head">
+      <div class="socket">{{mark}}</div>
+      <div class="eyebrow">{{eyebrow}}</div>
+    </div>
+    <h1>{{headline}}</h1>
+    <ul>{{bullets}}</ul>
+    <div class="foot">
+      <div class="handle">{{handle}}</div>
+      <div class="meta">{{meta}}</div>
+    </div>
+  </div>
+</div>
+
+<div class="end">
+  <div class="logo">{{mark}}</div>
+  <div class="follow">follow {{handle}}</div>
+  <div class="link">{{link}}</div>
+</div>
+
+<script>
+/* Deterministic timeline: every animation is WAAPI, paused, and driven by seek(ms).
+   The renderer calls seek() once per frame, so the video is the same on every run. */
+const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const POP = "cubic-bezier(.34,1.56,.64,1)", OUT = "cubic-bezier(.22,1,.36,1)", IN = "cubic-bezier(.55,0,1,.45)";
+const at = (el, t, dur, kf, o = {}) => el && el.animate(kf, { delay: t, duration: dur, fill: "both", easing: "linear", ...o });
+
+// Headline -> one span per word, so each word can pop on its own.
+const h1 = $("h1");
+h1.innerHTML = h1.textContent.trim().split(/\s+/).map(w => `<span class="w">${w}</span>`).join(" ");
+
+// Sparks for the sticker slap.
+const eb = $(".eyebrow"), jelly = ["--tang", "--bub", "--sky", "--lime", "--grape", "--tang", "--sky", "--bub"];
+jelly.forEach((c, i) => { const s = document.createElement("i"); s.className = "spark";
+  s.style.background = `var(${c})`; eb.appendChild(s); });
+
+// Meta: count the leading number up ("6 updates shipped").
+const meta = $(".meta"), metaText = meta.textContent, metaNum = parseInt(metaText, 10);
+
+/* 0.00 toys pop in, staggered */
+$$(".toy").forEach((el, i) => {
+  const t = 60 + i * 70, r = (i % 2 ? 1 : -1) * 24;
+  at(el, t, 620, [
+    { transform: `scale(0) rotate(${r}deg)` },
+    { transform: `scale(1.18) rotate(${-r / 3}deg)`, offset: .55 },
+    { transform: "scale(.95) rotate(0deg)", offset: .8 },
+    { transform: "scale(1) rotate(0deg)" }], { easing: OUT });
+  // idle drift: slow bob + turn, different phase per toy
+  at(el, 700 + i * 90, 2400, [
+    { translate: "0 0", rotate: "0deg" },
+    { translate: `0 ${i % 2 ? 18 : -18}px`, rotate: `${i % 2 ? 6 : -6}deg` },
+    { translate: "0 0", rotate: "0deg" }], { iterations: 3, easing: "ease-in-out" });
+});
+
+/* 0.25 card drops in with a squash on landing */
+const card = $(".card");
+at(card, 250, 820, [
+  { transform: "translateY(-1500px) scale(1,1.06)" },
+  { transform: "translateY(0) scale(1,1.04)", offset: .52, easing: "ease-out" },
+  { transform: "translateY(0) scale(1.035,.93)", offset: .64 },
+  { transform: "translateY(-26px) scale(.99,1.02)", offset: .8 },
+  { transform: "translateY(0) scale(1,1)" }], { easing: "linear" });
+
+/* 0.85 mark + sticker slap */
+at($(".socket"), 850, 560, [
+  { transform: "scale(0) rotate(-40deg)" }, { transform: "scale(1.25) rotate(8deg)", offset: .6 },
+  { transform: "scale(1) rotate(0deg)" }], { easing: OUT });
+at(eb, 980, 520, [
+  { transform: "scale(1.9) rotate(-14deg)", opacity: 0 }, { opacity: 1, offset: .25 },
+  { transform: "scale(.92) rotate(-2deg)", offset: .6 }, { transform: "scale(1) rotate(-3deg)", opacity: 1 }],
+  { easing: OUT });
+$$(".spark", eb).forEach((s, i) => {
+  const a = i / 8 * Math.PI * 2 + .3, d = 150 + (i % 3) * 40;
+  at(s, 1180, 620, [
+    { transform: "translate(0,0) scale(.4) rotate(0deg)", opacity: 1 },
+    { transform: `translate(${Math.cos(a) * d}px,${Math.sin(a) * d * .7}px) scale(1) rotate(${i * 45}deg)`, opacity: 1, offset: .7 },
+    { transform: `translate(${Math.cos(a) * d * 1.1}px,${Math.sin(a) * d * .8 + 30}px) scale(0) rotate(${i * 60}deg)`, opacity: 0 }],
+    { easing: OUT });
+});
+// sticker breathes while the rest plays
+at(eb, 1600, 1200, [{ rotate: "0deg" }, { rotate: "2.5deg" }, { rotate: "0deg" }], { iterations: 4, easing: "ease-in-out", composite: "add" });
+
+/* 1.30 headline words pop, one after another */
+$$("h1 .w").forEach((w, i) => at(w, 1300 + i * 85, 520, [
+  { transform: "translateY(70px) scale(.5) rotate(-6deg)", opacity: 0 },
+  { opacity: 1, offset: .3 },
+  { transform: "translateY(-10px) scale(1.08) rotate(1deg)", offset: .65 },
+  { transform: "translateY(0) scale(1) rotate(0deg)", opacity: 1 }], { easing: OUT }));
+
+/* 2.10 bullets: tile bounces, line slides, the bold bit gets highlighted */
+$$("li").forEach((li, i) => {
+  const t = 2100 + i * 380, tile = $("i", li), txt = $("span", li);
+  at(tile, t, 600, [
+    { transform: "scale(0) rotate(-35deg)" }, { transform: "scale(1.22) rotate(10deg)", offset: .55 },
+    { transform: "scale(.94) rotate(-3deg)", offset: .8 }, { transform: "scale(1) rotate(0deg)" }], { easing: OUT });
+  at(txt, t + 90, 520, [{ transform: "translateX(46px)", opacity: 0 }, { transform: "translateX(0)", opacity: 1 }], { easing: OUT });
+  $$("b", li).forEach(b => at(b, t + 420, 420, [{ backgroundSize: "0% 100%" }, { backgroundSize: "100% 100%" }], { easing: OUT }));
+  if (tile) at(tile, t + 900, 1300, [{ translate: "0 0" }, { translate: "0 -7px" }, { translate: "0 0" }],
+    { iterations: 3, easing: "ease-in-out" });
+});
+
+/* 3.40 footer */
+const foot = 2100 + $$("li").length * 380 + 250;
+at($(".handle"), foot, 480, [{ transform: "translateY(24px)", opacity: 0 }, { transform: "translateY(0)", opacity: 1 }], { easing: OUT });
+at(meta, foot + 120, 560, [
+  { transform: "scale(0)" }, { transform: "scale(1.2)", offset: .6 }, { transform: "scale(1)" }], { easing: OUT });
+
+/* 6.30 card leaves: a little wind-up, then up and away */
+const END = 6300;
+at(card, END, 520, [
+  { transform: "translateY(0) scale(1)" }, { transform: "translateY(30px) scale(.96,.94)", offset: .3 },
+  { transform: "translateY(-1900px) scale(.9,1.1)" }], { easing: IN, fill: "forwards" });
+$$(".toy").forEach((el, i) => at(el, END + 60 + i * 30, 520, [
+  { scale: "1" }, { scale: "1.15", offset: .3 }, { scale: "0" }], { easing: IN }));
+
+/* 6.70 logo key falls, squashes, settles */
+at($(".logo"), END + 380, 760, [
+  { transform: "translateY(-1300px) rotate(-18deg) scale(1)" },
+  { transform: "translateY(0) rotate(0deg) scale(1)", offset: .5, easing: "ease-out" },
+  { transform: "translateY(0) scale(1.14,.84)", offset: .62 },
+  { transform: "translateY(-40px) scale(.96,1.05)", offset: .8 },
+  { transform: "translateY(0) scale(1)" }]);
+at($(".follow"), END + 900, 480, [
+  { transform: "scale(1.8) rotate(-12deg)", opacity: 0 }, { opacity: 1, offset: .3 },
+  { transform: "scale(.94) rotate(-2deg)", offset: .65 }, { transform: "scale(1) rotate(-3deg)", opacity: 1 }], { easing: OUT });
+at($(".link"), END + 1120, 420, [{ transform: "translateY(30px)", opacity: 0 }, { transform: "translateY(0)", opacity: 1 }], { easing: OUT });
+
+const all = document.getAnimations();
+all.forEach(a => a.pause());
+window.seek = ms => {
+  all.forEach(a => { a.currentTime = ms; });
+  if (!isNaN(metaNum)) {
+    const k = Math.min(1, Math.max(0, (ms - foot - 120) / 700));
+    meta.textContent = metaText.replace(/^\d+/, Math.round(metaNum * (1 - Math.pow(1 - k, 3))));
+  }
+};
+window.ready = document.fonts.ready.then(() => { seek(0); return true; });
+</script>
