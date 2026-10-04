@@ -1,6 +1,6 @@
 ---
 name: shipcast
-description: "Turn a project's Claude Code logs and git commits into a finished X post: harvest a digest, write the copy, render a card (4:5) and an animated 9:16 clip in the project's style, and send both to the user's phone on Telegram so they can post it themselves. Use when the user says yes to 'Should I make an X post for this?', or asks for a ship log, a changelog post, build-in-public content, 'post the update', 'make a post out of this', 'shipcast'."
+description: "Turn a project's Claude Code logs and git commits into a finished X post: harvest a digest, write the copy, render a card (4:5) and an animated 9:16 clip in the project's style, send both to the user's Telegram, and — after an explicit yes — post it to X through the logged-in browser. Use when the user says yes to 'Should I make an X post for this?', or asks for a ship log, a changelog post, build-in-public content, 'post the update', 'make a post out of this', 'shipcast'."
 ---
 
 # shipcast
@@ -8,8 +8,9 @@ description: "Turn a project's Claude Code logs and git commits into a finished 
 What Claude Code logs anyway becomes a post. No second changelog to maintain: the logs
 **are** the raw material.
 
-**shipcast never publishes.** It builds the post and sends it to the user's own Telegram
-chat. The human posts it to X from their phone. There are no social media API keys here.
+**Nothing goes public without a yes for that exact post.** shipcast builds the post, sends it
+to the user's own Telegram chat, and posts to X only when the human confirms — through a
+logged-in browser, not an API. There are no social media API keys here.
 
 ## When to offer it
 
@@ -123,6 +124,31 @@ not a publish and needs no extra yes. `telegram.json` in the draft stops a doubl
 after a re-render use `--force`. Then tell the user it's on their phone.
 
 If it says Telegram is not set up, walk them through **Telegram setup** in `INSTALL.md`.
+Telegram is optional — without it, skip this step and show the card and caption in the chat.
+
+### 5. Post to X — only after a yes
+
+Show the X caption (and the card, if you haven't) and ask one question:
+
+> Should I post this on X now?
+
+- **No** → stop. It's on their phone; they can post it themselves.
+- **Yes** → post it through the logged-in browser:
+
+```bash
+python3 ~/.claude/skills/shipcast/scripts/post_x.py ~/.claude/skills/shipcast/drafts/2026-10-04-live-scan
+```
+
+It writes the X caption (plus hashtags not already in it) into the composer, attaches
+`clip.mp4` (or `card.png` when there is no clip), waits until X has processed the video,
+presses post and checks for the confirmation. It prints the account it posted as — if that
+isn't the style's `x_handle`/`handle`, say so. `posted.json` stops a double post.
+
+A yes counts for that one post only. Never post without asking, never post a changed text
+without asking again. `--dry-run` fills everything and stops before the button.
+
+If it says **not logged in**: run `post_x.py --login`, tell the human to sign in to X in
+the browser window that opens (once — the profile keeps the session), then retry.
 
 ## Styles — one per project
 
@@ -166,6 +192,8 @@ Never bend a post's text to fit a style, and never restyle a project on a whim.
 ## When something breaks
 
 - **"No Chrome/Chromium found"** → install one or set `CHROME=/path/to/chrome`.
+- **X changed its page** (composer or button not found) → the selectors at the top of
+  `scripts/post_x.py` need an update; meanwhile the post is on Telegram to post by hand.
 - **`No module named 'websockets'`** → `python3 -m pip install --user websockets`.
 - **Fonts look wrong** → fonts load from Google Fonts at render time; offline you get the
   system fallback.

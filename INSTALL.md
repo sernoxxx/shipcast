@@ -8,7 +8,8 @@
 You are installing **shipcast**, a Claude Code skill. After every meaningful, larger update
 it asks the user whether to make an X post; on a yes it renders a card plus an animated
 clip in the project's style and sends both to the user's Telegram, so they can post it from
-their phone. It never posts anywhere by itself and needs no social media API keys.
+their phone. If the user confirms, it also posts to X through a logged-in browser window.
+Nothing goes public without a yes, and it needs no social media API keys.
 
 Do these steps in order. Talk to the user in their language. Ask only where it says so.
 
@@ -54,7 +55,8 @@ with one short question in the user's language: "Should I make an X post for thi
 Only for real features, visible changes, releases or noticeable fixes — never for typos,
 refactors, config or tests, and at most once per update.
 No → do nothing. Yes → use the shipcast skill end to end: harvest, write post.json,
-render the card and the animated clip, send it via telegram.py. Never post to X yourself.
+render the card and the animated clip, send it via telegram.py. Then ask
+"Should I post this on X now?" — only on a yes run post_x.py for that exact post.
 ```
 
 If the user only wants this for specific projects, put the block in those projects'
@@ -83,7 +85,19 @@ python3 ~/.claude/skills/shipcast/scripts/telegram.py --test
 `--find-chat` reads the chat id from the bot's inbox and saves it. `--test` must arrive on
 their phone as "shipcast is connected ✓". Never echo the token back or put it anywhere else.
 
-## 5. Pick the style
+## 5. X login (optional, for posting straight from Claude Code)
+
+Ask whether they want shipcast to post to X for them after a confirmation. If yes:
+
+```bash
+python3 ~/.claude/skills/shipcast/scripts/post_x.py --login
+```
+
+A browser window opens on x.com with shipcast's own profile
+(`~/.config/shipcast/browser-profile`). They sign in there once with the account that should
+post; the session stays. If not, skip this — posts still arrive on Telegram.
+
+## 6. Pick the style
 
 Ask which project(s) shipcast is for. Then:
 
@@ -94,10 +108,12 @@ Ask which project(s) shipcast is for. Then:
 - Otherwise offer to create one, following **Styles → Creating one** in `SKILL.md`. Own
   styles always go in `~/.config/shipcast/styles/`, never into the cloned repo.
 
-## 6. Prove it works
+## 7. Prove it works
 
 Make one test post about the project's recent work: follow the flow in `SKILL.md`
 (harvest `--since 7d`, write `post.json`, render, look at `card.png`, send via Telegram).
+If X is logged in, run `post_x.py <draft> --dry-run` to prove the composer fills — don't
+actually post the test.
 Tell the user it's on their phone and that from now on you'll ask after bigger updates.
 
 ## Updating later
@@ -106,5 +122,5 @@ Tell the user it's on their phone and that from now on you'll ask after bigger u
 git -C ~/.claude/skills/shipcast pull && python3 ~/.claude/skills/shipcast/test_shipcast.py
 ```
 
-Drafts (`drafts/`), Telegram config and own styles live outside version control, so a pull
+Drafts (`drafts/`), Telegram config, the browser profile and own styles live outside version control, so a pull
 never touches them.

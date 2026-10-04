@@ -4,7 +4,7 @@ import json, sys, tempfile
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent / "scripts"))
-import harvest, render, telegram
+import harvest, render, telegram, post_x
 
 # --- time window parsing
 assert abs((harvest.since_dt("24h") - harvest.since_dt("1d")).total_seconds()) < 1
@@ -69,5 +69,14 @@ with tempfile.TemporaryDirectory() as d:
     f = Path(d) / "telegram.env"
     f.write_text('# comment\nTELEGRAM_BOT_TOKEN="123:abc"\nTELEGRAM_CHAT_ID=42\n')
     assert telegram.read_env(f) == {"TELEGRAM_BOT_TOKEN": "123:abc", "TELEGRAM_CHAT_ID": "42"}
+
+# --- X caption: hashtags appended once, never doubled; clip beats card
+assert post_x.caption({"captions": {"x": "New #game"}, "hashtags": ["#game", "#indie"]}) == "New #game\n\n#indie"
+assert post_x.caption({"headline": "only"}) == "only"
+with tempfile.TemporaryDirectory() as d:
+    d = Path(d)
+    assert post_x.media(d) is None
+    (d / "card.png").write_bytes(b""); assert post_x.media(d).name == "card.png"
+    (d / "clip.mp4").write_bytes(b""); assert post_x.media(d).name == "clip.mp4"
 
 print("all checks green")
